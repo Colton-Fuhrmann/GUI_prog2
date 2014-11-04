@@ -68,4 +68,52 @@ public class ElementLister
             System.out.print( "  " );
         }
     }
+    
+        public Element get_node_from_abbr( Element current, String abbr_value)
+    {
+	// get children of current node
+        List children = current.getChildren();
+        Iterator iterator = children.iterator();
+
+        // If the node is a leaf node and tag name is abbr
+        if ( !iterator.hasNext() && current.getName() == "abbr" 
+              && current.getValue() == abbr_value)
+        {
+            Element node =  (Element) children.get(0); //Return the entire xml element
+            return (Element) node.getParent();
+        }
+
+        // recursively process each child node
+        while ( iterator.hasNext() )
+        {
+            Element child = ( Element ) iterator.next();
+            get_node_from_abbr( child, abbr_value );
+        }
+        
+        return (Element) current.getParent();
+    }
+    
+    //Returns an array of strings that has the abbr tags for constellations
+    //in alphabetical order
+    public String[] abbr_in_order()
+    {
+        int number_of_nodes = original_root.getContentSize();
+        String[] abbr = new String[number_of_nodes];
+        String child_text;
+        Element current;
+        
+        List children = original_root.getChildren();
+        
+        for(int i = 0; i < number_of_nodes; i++)
+        {
+            current = (Element) children.get(i);
+            child_text = current.getChildText("abbr");
+            abbr[i] = child_text;
+        }
+        
+        Arrays.sort(abbr);
+        
+        return abbr;
+        
+    }
 }

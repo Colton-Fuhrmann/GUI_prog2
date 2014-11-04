@@ -4,6 +4,11 @@
  */
 package starmap;
 
+import org.jdom2.*;
+import org.jdom2.input.SAXBuilder;
+import java.io.IOException;
+import java.util.*;
+
 /**
  *
  * @author 7106215
@@ -27,12 +32,12 @@ public class constellation {
     
     public String[] name_table; //Hash table for the names of the stars
     public point[] value_table; //Values that correspond to the names in name_table[]
-    public String[] line_list; //List of line segments in constellation
+    public String[] line_list; //List of star names of line segments in constellation
     
     /////////////////////////////////////////////////
     //TODO pass in the xml node for the constellation that has the list of stars
     //and then put those in line_list
-    public constellation()
+    public constellation(Element node)
     {
         name_table = new String[table_size];
         value_table = new point[table_size];
@@ -43,6 +48,28 @@ public class constellation {
         {
             name_table[i] = "invalid_star";
             line_list[i] = "invalid_star";
+        }
+        
+        List children = node.getChildren();
+        int j = 0;
+        
+        //Go through all tags in node
+        for(int i = 0; i < node.getContentSize(); i++)
+        {
+            // If it's a line tag
+            if (((Element)children.get(i)).getName() == "line")
+            {
+                //Break into two strings, each holding a star name, 
+                //since the line tag is "star1 to star2"
+                String text = ((Element)children.get(i)).getValue();
+                String delimiter = "[ to ]";
+                String[] star_names = text.split(delimiter);
+
+                line_list[j] = star_names[0];
+                j++;
+                line_list[j] = star_names[1];
+                j++;
+            }
         }
     }
     
