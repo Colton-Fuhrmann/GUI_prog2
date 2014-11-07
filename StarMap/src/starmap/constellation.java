@@ -15,21 +15,7 @@ import java.util.*;
  */
 public class constellation {
     
-    static int table_size = 53; //Size of hash and  line_list tables
-    
-    //Stores an (x, y) point of a star in the constellation
-    public class point
-    {
-        float x, y;
-        
-        //Construct origin point
-        public point()
-        {
-            x = 0;
-            y = 0;
-        }
-    }
-    
+    static int table_size = 97; //Size of hash and  line_list tables
     public String[] name_table; //Hash table for the names of the stars
     public point[] value_table; //Values that correspond to the names in name_table[]
     public String[] line_list; //List of star names of line segments in constellation
@@ -43,6 +29,11 @@ public class constellation {
         value_table = new point[table_size];
         line_list = new String[table_size];
         
+        for(int i = 0; i < table_size; i++)
+        {
+            value_table[i] = new point();
+        }
+        
         //Initialize the required arrays with invalid values
         for(int i = 0; i < table_size; i++)
         {
@@ -51,10 +42,11 @@ public class constellation {
         }
         
         List children = node.getChildren();
+        int size = (node.getContentSize() - 1) / 2;
         int j = 0;
         
         //Go through all tags in node
-        for(int i = 0; i < node.getContentSize(); i++)
+        for(int i = 0; i < size; i++)
         {
             // If it's a line tag
             if (((Element)children.get(i)).getName() == "line")
@@ -62,7 +54,7 @@ public class constellation {
                 //Break into two strings, each holding a star name, 
                 //since the line tag is "star1 to star2"
                 String text = ((Element)children.get(i)).getValue();
-                String delimiter = "[ to ]";
+                String delimiter = "[to]";
                 String[] star_names = text.split(delimiter);
 
                 line_list[j] = star_names[0];
@@ -70,6 +62,14 @@ public class constellation {
                 line_list[j] = star_names[1];
                 j++;
             }
+        }
+    }
+    
+    public void reset_hash_table()
+    {
+        for(int i = 0; i < table_size; i++)
+        {
+            name_table[i] = "invalid_star";
         }
     }
     
@@ -107,7 +107,7 @@ public class constellation {
         //Use quadratic hashing to find available index for name
         for(i = 1; i < table_size; i++)
         {
-            if(name_table[index] == "invalid_star") //Spot is available
+            if(name_table[index].equals("invalid_star")) //Spot is available
             {
                 return index; //name hashes here
             }
@@ -121,9 +121,21 @@ public class constellation {
     }
     
     //Puts the star name in name_table and its computed x and y in the value_table
-    public void set_star_hash_value(String name, float x, float y)
+    public void set_star_hash_value(String name, double x, double y)
     {
         int index = hash_star_name(name); //Get hash value for star name
+        
+        System.out.print("index = ");
+        System.out.print(index);
+        System.out.print("\n");
+        
+        System.out.print("x = ");
+        System.out.print(x);
+        System.out.print("\n");
+        
+        System.out.print("value_table[index].x = ");
+        System.out.print(value_table[index].x);
+        System.out.print("\n");
         
         //Set the passed values in the appropriate tables
         name_table[index] = name;
