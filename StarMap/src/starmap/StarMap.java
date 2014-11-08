@@ -21,19 +21,19 @@ public class StarMap {
      * @param args the command line arguments
      */
     
-    double ra = 1.770; //Sirius from star file
-    double dec = -0.292; //Sirius from star file
-    double lat = 0.769; //Computed from user entry 44.08
-    double lon = -1.802; //Computed from user entry -103.23
-    double azi = 5.074; //Computed from star, 290.709 degrees
-    double alt = -0.749; //-Computed from star, 42.932 degrees
-    double azi0 = Math.toRadians(45); //Supplied by user as azi
-    double alt0 = Math.toRadians(45); //Supplied by user as alt
-    
     //Main takes two command line arguments
     //args[0] will be the stars xml file (default "../stars.xml")
     //args[1] will be the constellations xml file (default "../constellations.xml")
     public static void main(String[] args) {
+        
+        //Initiallize computation class, which will handle
+        //conputing star and constellation positions
+        computation compute = new computation(args);
+        
+        compute.user_changes_position(44.08, -103.23, 45, 45);
+        //compute.user_changes_position(44.08, -103.23, 90, 90);
+        
+        /*
         
         //Set defualt filenames
         String stars_filename = "../stars.xml";
@@ -148,20 +148,23 @@ public class StarMap {
             }
 
             stars.current_star_positions.add(x_y);
-            System.out.print( "(x, y) for ");
+            System.out.print(i);
+            System.out.print( " star (x, y) for ");
             System.out.print(current_star.name);
-            System.out.printf( " = %e %e\n", x_y.x, x_y.y);
+            System.out.printf( " = %.3f %.3f\n", x_y.x, x_y.y);
             //////////////////
             //Draw star with current_star. variables for information and x y for position
             /////////////////
             
             i++;
             current_i.next();
-            System.exit(123);
+            
+            */
         }
         
     }
     
+    /*
     public static point compute_x_y(star_contents current, double lat, double lon, double alt0, double azi0)
     {
         // # days since June 10, 2005 6:45:14 GMT = 1957.093588
@@ -208,7 +211,7 @@ public class StarMap {
         x_y.x = x;
         x_y.y = y;
         
-        return x_y;
-        
-        }
+        return x_y;     
+    }
+    */
 }

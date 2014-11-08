@@ -54,9 +54,8 @@ public class constellation {
                 //Break into two strings, each holding a star name, 
                 //since the line tag is "star1 to star2"
                 String text = ((Element)children.get(i)).getValue();
-                String delimiter = "[to]";
-                String[] star_names = text.split(delimiter);
-
+                String[] star_names = text.split("to");
+                
                 line_list[j] = star_names[0];
                 j++;
                 line_list[j] = star_names[1];
@@ -77,6 +76,11 @@ public class constellation {
     {
         point point1 = new point();
         point point2 = new point();
+        
+        for(int i = 0; i < table_size; i++)
+        {
+            System.out.println(line_list[i]);
+        }
         
         for(int i = 0; i < table_size && line_list[i] != "invalid_star"; i++)
         {
@@ -117,6 +121,8 @@ public class constellation {
             }
         }
         
+        //System.out.print("Here with name = ");
+        //System.out.println(name);
         return index; //Shuts up NetBeans error for no return at end of function
     }
     
@@ -125,22 +131,29 @@ public class constellation {
     {
         int index = hash_star_name(name); //Get hash value for star name
         
-        System.out.print("index = ");
-        System.out.print(index);
-        System.out.print("\n");
+        //System.out.print("index = ");
+        //System.out.print(index);
+        //System.out.print("\n");
         
-        System.out.print("x = ");
-        System.out.print(x);
-        System.out.print("\n");
+        //System.out.print("x = ");
+        //System.out.print(x);
+        //System.out.print("\n");
         
-        System.out.print("value_table[index].x = ");
-        System.out.print(value_table[index].x);
-        System.out.print("\n");
+        //System.out.print("value_table[index].x = ");
+        //System.out.print(value_table[index].x);
+        //System.out.print("\n");
         
         //Set the passed values in the appropriate tables
         name_table[index] = name;
         value_table[index].x = x;
         value_table[index].y = y;
+        
+        /*if(name.equals(" 31Del "))
+        {
+            System.out.println(name_table[index]);
+            System.out.println(value_table[index].x);
+            System.out.println(value_table[index].y);
+        }*/
         
         return;
     }
