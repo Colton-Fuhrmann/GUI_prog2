@@ -5,8 +5,6 @@
 package starmap;
 
 import org.jdom2.*;
-import org.jdom2.input.SAXBuilder;
-import java.io.IOException;
 import java.util.*;
 
 /**

@@ -10,7 +10,7 @@ package starmap;
  */
 public class point
 {
-    double x, y;
+    double x, y, vmag;
 
     //Construct origin point
     public point()

@@ -224,6 +224,7 @@ public class computation {
             current_i.next();
         }
         
+        /*  Testing the output to make sure we're calculating the right values
         
         for(i = 0; i < constellation_objects[0].line_list.length; i++)
         {
@@ -243,9 +244,17 @@ public class computation {
         {
             System.out.print(constellation_objects[0].value_table[i].x);
             System.out.print(", ");
-            System.out.println(constellation_objects[0].value_table[i].y);
-            
+            System.out.print(constellation_objects[0].value_table[i].y);
+            System.out.print(", ");
+            System.out.println(constellation_objects[0].value_table[i].vmag);
         }
+        
+        for(i = 0; i < stars.current_star_positions.size(); i++)
+        {
+            System.out.println(stars.current_star_positions.get(i).x);
+        }
+        
+        */
          
     }
     
