@@ -12,7 +12,7 @@ import javax.swing.*;
  *
  * @author 7106215
  */
-public class toolbar_item 
+public class toolbar_item
 {
     public JLabel label;
     public JTextField input;
@@ -36,6 +36,7 @@ public class toolbar_item
         
         input.addActionListener( new ActionListener()
         {
+            @Override
             public void actionPerformed( ActionEvent event )
             {
                 System.out.println( "Input was " + input.getText());
@@ -54,6 +55,36 @@ public class toolbar_item
                 }               
             }
         } );
+        
+        input.addFocusListener( new FocusListener()
+        {
+            @Override
+            public void focusLost( FocusEvent event )
+            {
+                System.out.println( "Input was " + input.getText());
+                try
+                {
+                    input_value = Double.parseDouble(input.getText());
+                }
+                catch(NumberFormatException exception)
+                {
+                    input.setText(input_default);
+                }
+
+                if(input_value > max_value || input_value < min_value)
+                {
+                    input.setText(input_default);
+                }               
+            }
+            
+            @Override
+            public void focusGained( FocusEvent event )
+            {
+             
+            }
+        } );
+        
+        
     }
     
     

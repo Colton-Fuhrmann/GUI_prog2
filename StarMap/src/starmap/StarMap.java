@@ -21,13 +21,14 @@ public class StarMap {
         
         //Initiallize computation class, which will handle
         //conputing star and constellation positions
+        ui ui = null;
         computation compute = new computation(args);
+
+        compute.user_changes_position(44.08, -103.23, 45, 45, 2010, 10, 6, 5, 2, 1);
         
-        compute.user_changes_position(44.08, -103.23, 45, 45);
-        //compute.user_changes_position(44.08, -103.23, 90, 90);
-        
-        ui ui = new ui();
-        
+        ui = new ui(compute);
+        compute.set_ui(ui);
+
         }
         
     }

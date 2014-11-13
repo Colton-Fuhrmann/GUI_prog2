@@ -23,6 +23,13 @@ public class computation {
     double alt = -0.749; //-Computed from star, 42.932 degrees
     double azi0 = Math.toRadians(45); //Supplied by user as azi
     double alt0 = Math.toRadians(45); //Supplied by user as alt
+    int year;
+    int month;
+    int day;
+    int hour;
+    int min;
+    int sec;
+    ui ui;
     
     //Star (x, y) for 9Alp (Sirius) to be (-0.667,-0.269)
     
@@ -33,6 +40,7 @@ public class computation {
     
     public computation(String[] args)
     {
+    
         //Set defualt filenames
         String stars_filename = "../stars.xml";
         String constellations_filename = "../constellations.xml";
@@ -93,12 +101,21 @@ public class computation {
     }
     
     public void user_changes_position(double user_lat, double user_lon,
-                                      double user_azi0, double user_alt0)
+                                      double user_azi0, double user_alt0,
+                                      double user_year, double user_month,
+                                      double user_day, double user_hour,
+                                      double user_min, double user_sec)
     {
         lat = Math.toRadians(user_lat);
         lon = Math.toRadians(user_lon);
         azi0 = Math.toRadians(user_azi0);
         alt0 = Math.toRadians(user_alt0);
+        year = (int)user_year;
+        month = (int)user_month;
+        day = (int)user_day;
+        hour = (int)user_hour;
+        min = (int)user_min;
+        sec = (int)user_sec;
         
         Iterator<star_contents> current_i = stars.star_array.iterator();
         int i = 0;
@@ -122,6 +139,7 @@ public class computation {
             //Set current star and compute the x and y values given user position
             star_contents current_star = stars.star_array.get(i);
             x_y = compute_x_y(current_star);
+            
             
             //If the star is in a constellation
             if(current_star.constellation != null)
@@ -210,10 +228,10 @@ public class computation {
 
             stars.current_star_positions.add(x_y);
             
-            /*System.out.print(i);
+            System.out.print(i);
             System.out.print( " star (x, y) for ");
             System.out.print(current_star.name);
-            System.out.printf( " = %.3f %.3f\n", x_y.x, x_y.y);*/
+            System.out.printf( " = %.3f %.3f\n", x_y.x, x_y.y);
             
             
             //////////////////
@@ -259,16 +277,14 @@ public class computation {
     }
     
     //From StarPos
-    public double elapsed_days( )
+    public double elapsed_days()
     {
-        // double date_now, time_now;
-        // System.out.print( "Enter date and time: " );
-        // cin >> date_now >> time_now;
+
 
         // e.g., suppose current time is Oct 29, 2012 11:00:00 MST
         GregorianCalendar now_cal = new GregorianCalendar();
         GregorianCalendar then_cal = new GregorianCalendar();
-        now_cal.set( 2012, 10, 29, 11, 0, 0 );
+        now_cal.set( year, month, day, hour, min, sec );
         then_cal.set( 2005, 5, 10, 6, 45, 14 );
 
         // need current time in GMT (MST + 6 hours, or MST 7 hours if not daylight savings time)
@@ -329,5 +345,9 @@ public class computation {
         return x_y;     
     }
     
+  public void set_ui(ui passed_ui)
+    {
+        ui = passed_ui;
+    }
     
 }
