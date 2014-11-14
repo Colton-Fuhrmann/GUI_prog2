@@ -20,11 +20,12 @@ import javax.swing.*;
 // toolbar demo class
 public class toolbar extends JPanel
 {
-   public toolbar_item lat, lon, azi, alt, year, month, day, hour, min, sec;
+   public toolbar_item lat, lon, azi, alt, vmag, year, month, day, hour, min, sec;
    computation compute;
+   star_panel drawArea;
    
     // constructor
-    public toolbar(computation passed_compute)
+    public toolbar(computation passed_compute, star_panel passed_drawArea)
     {    
        // add buttons to toolbar
         JToolBar toolbar = new JToolBar();
@@ -36,6 +37,7 @@ public class toolbar extends JPanel
         lon = new toolbar_item(" Longitude: ", "-103.23", -103.23, -180, 180);
         azi = new toolbar_item(" Azimuth: ", "45", 45, 0, 360);
         alt = new toolbar_item(" Altitude: ", "45", 45, 0, 90);
+        vmag = new toolbar_item(" Minimum Vmag: ", "0", 0, -2, 50);
         year = new toolbar_item(" Year: ", "2014", 2014, 2006, 5000);
         month = new toolbar_item(" Month: ", "11", 11, 1, 12);
         day = new toolbar_item(" Day: ", "10", 10, 1, 31);
@@ -43,6 +45,7 @@ public class toolbar extends JPanel
         min = new toolbar_item(" Minutes: ", "20", 20, 0, 60);
         sec = new toolbar_item(" Seconds: ", "00", 0, 0, 60);
         compute = passed_compute;
+        drawArea = passed_drawArea;
 
         
         // create a button for users to click to apply their changes
@@ -57,6 +60,8 @@ public class toolbar extends JPanel
         top_row.add(azi.input);
         top_row.add(alt.label);
         top_row.add(alt.input);
+        top_row.add(vmag.label);
+        top_row.add(vmag.input);
         top_row.add(applyInput);
        
         bottom_row.add(year.label);
@@ -89,12 +94,14 @@ public class toolbar extends JPanel
         @Override
         public void actionPerformed( ActionEvent event )
         {
-
-        compute.user_changes_position(lat.input_value, lon.input_value,
+            compute.minimum_vmag = vmag.input_value;
+            
+            compute.user_changes_position(lat.input_value, lon.input_value,
                       azi.input_value, alt.input_value, year.input_value,
                       month.input_value, day.input_value, 
                       min.input_value, hour.input_value, sec.input_value);
-
+            
+            drawArea.repaint();
         }
     }
     

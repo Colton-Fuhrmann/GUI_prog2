@@ -8,6 +8,8 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import org.jdom2.Element;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *
@@ -30,6 +32,10 @@ public class computation {
     int min;
     int sec;
     ui ui;
+    boolean constellations_on;
+    double minimum_vmag;
+    double vmag_range_low;
+    double vmag_range_high;
     
     //Star (x, y) for 9Alp (Sirius) to be (-0.667,-0.269)
     
@@ -95,9 +101,7 @@ public class computation {
             
             i++;
             iterator.next();
-        }  
-        
-        
+        }   
     }
     
     public void user_changes_position(double user_lat, double user_lon,
@@ -116,6 +120,9 @@ public class computation {
         hour = (int)user_hour;
         min = (int)user_min;
         sec = (int)user_sec;
+        
+        vmag_range_low = 50;
+        vmag_range_high = -50;
         
         Iterator<star_contents> current_i = stars.star_array.iterator();
         int i = 0;
@@ -227,11 +234,11 @@ public class computation {
             }
 
             stars.current_star_positions.add(x_y);
-            
-            System.out.print(i);
-            System.out.print( " star (x, y) for ");
-            System.out.print(current_star.name);
-            System.out.printf( " = %.3f %.3f\n", x_y.x, x_y.y);
+        
+            //System.out.print(i);
+            //System.out.print( " star (x, y) for ");
+            //System.out.print(current_star.name);
+            //System.out.printf( " = %.3f %.3f\n", x_y.x, x_y.y);
             
             
             //////////////////
@@ -334,20 +341,107 @@ public class computation {
         double y = R * ( Math.cos( alt0 ) * Math.sin( alt ) - Math.sin( alt0 ) * Math.cos( alt ) * Math.cos( azi - azi0 ) );
         double clip = Math.sin( alt0 ) * Math.sin ( alt ) + Math.cos( alt0 ) * Math.cos( alt ) * Math.cos( azi - azi0 );
         //System.out.printf( "\nstar position: (x,y) = (%.3f,%.3f)", x, y );
-        //if ( clip < 0.0 )
-            //System.out.print( "    <= bad point, should be clipped!" );
-        //System.out.printf( "\n\n" );
         
         point x_y = new point();
+        
+        //If the star has positive coordinates and should be displayed
+        if (clip >= 0.0)
+        {
+            //Save this view's min and max vmag range to be used for scaling later
+            if(current.vmag > vmag_range_high)
+            {
+                vmag_range_high = current.vmag;
+            }
+            else if(current.vmag < vmag_range_low)
+            {
+                vmag_range_low = current.vmag;
+            }  
+        }
+        
         x_y.x = x;
         x_y.y = y;
-        
+            
         return x_y;     
     }
     
-  public void set_ui(ui passed_ui)
+    public void set_ui(ui passed_ui)
     {
         ui = passed_ui;
+    }
+    
+    public void draw_stars(Graphics2D g, int panel_width, int panel_height)
+    {
+        int x, y; //Position of star
+        double vmag_range = vmag_range_high - vmag_range_low;
+        int opacity_scale = (int) Math.abs((vmag_range - vmag_range_low));
+        int radius; //Size of the star on the screen. Brighter stars are bigger
+        float opacity; //Brighter stars have a higher opacity
+        String name;
+        star_contents current_star;
+        
+        for(int i = 0; i < stars.current_star_positions.size(); i++)
+        {
+            current_star = stars.star_array.get(i);
+            name = "No Name";
+            
+            //Get the x and y of the star's current position
+            //Scale them by the panel_width and panel_height
+            x = (int) (stars.current_star_positions.get(i).x * panel_width);
+            y = (int) (stars.current_star_positions.get(i).y * panel_height);
+            
+            //Draw the star if it is at least the minimum vmag value
+            //(negative vmags are brighter, so <=)
+            if(current_star.vmag <= minimum_vmag)
+            {         
+                //Scale radius
+                //vmag_range - current_star.vmag makes all values negative
+                //Smallest values are brightest, therefore will need the largest radius
+                //Multiply by vmag_range to make the radius reasonably sized
+                //Absolute value to make them positive
+                radius = (int) Math.abs((vmag_range - current_star.vmag) * vmag_range);
+                
+                if(radius < 1)
+                {
+                    radius = 1;
+                }
+                else if(radius > 20)
+                {
+                    radius = 20;
+                }
+                
+                opacity = (float) Math.abs((vmag_range - current_star.vmag)) / opacity_scale;
+                
+                if(opacity < .1)
+                {
+                    opacity = 0.1f;
+                }
+                else if(opacity > 1)
+                {
+                    opacity = 1;
+                }
+
+                //Draw a star at the correct position with its radius and opacity
+                g.setColor(Color.white);
+                g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+                g.fillOval(x, y, radius, radius);
+                
+                //Only display name if brighter than 2.5
+                if(current_star.vmag < 2.5)
+                {
+                    //Get common name or name of the star if they aren't null
+                    if(stars.star_array.get(i).common_name != null)
+                    {
+                        name = stars.star_array.get(i).common_name;
+                    }
+                    else if(stars.star_array.get(i).name != null)
+                    {
+                        name = stars.star_array.get(i).name;
+                    }
+                    g.setColor(Color.yellow);
+                    g.drawString(name, (x + radius + 1), (y + radius + 1));
+                }
+            }
+        }
     }
     
 }

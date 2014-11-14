@@ -17,26 +17,29 @@ public class ui extends JFrame
 {
     private Container contents;
     public int x;
-    JPanel drawArea;
+    star_panel drawArea;
     
     public ui(computation compute)       
     {
         super("StarMap"); //Call JFrame constructor
         x = 10;
         
-        contents = getContentPane();       
-
-        toolbar toolbar = new toolbar(compute);
-        contents.add(toolbar, BorderLayout.NORTH);
-        setLocationRelativeTo( null );
-        setDefaultCloseOperation( EXIT_ON_CLOSE );
+        contents = getContentPane();
         
         Dimension content_size = new Dimension(600,600);
-        drawArea = new JPanel();
+        drawArea = new star_panel(compute);
         drawArea.setPreferredSize(content_size);
         drawArea.setBackground(Color.black);
+
+        toolbar toolbar = new toolbar(compute, drawArea);
+        contents.add(toolbar, BorderLayout.NORTH);
         contents.add(drawArea, BorderLayout.CENTER);
+        
+        setLocationRelativeTo( null );
+        setDefaultCloseOperation( EXIT_ON_CLOSE );
    
+        //drawArea.repaint();
+        
         setVisible(true);      
         pack();
     }
