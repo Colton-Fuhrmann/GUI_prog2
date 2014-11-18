@@ -6,6 +6,11 @@ package starmap;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import javax.swing.ToolTipManager;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 /**
  *
@@ -14,11 +19,13 @@ import java.awt.*;
 public class star_panel extends JPanel
 {
     computation compute;
+    boolean displaying_tooltip;
+    int count;
     
     public star_panel(computation passed_compute)
     {
         super();
-        
+
         //Save computation object so paintComponent() can call its draw_stars() method
         compute = passed_compute;
     }
@@ -40,5 +47,7 @@ public class star_panel extends JPanel
         //Draw all the stars in the panel
         g.setColor(Color.white);
         compute.draw_stars(g, width, height);
-    } 
+    }
+    
+
 }

@@ -39,7 +39,6 @@ public class toolbar_item
             @Override
             public void actionPerformed( ActionEvent event )
             {
-                System.out.println( "Input was " + input.getText());
                 try
                 {
                     input_value = Double.parseDouble(input.getText());
@@ -61,7 +60,6 @@ public class toolbar_item
             @Override
             public void focusLost( FocusEvent event )
             {
-                System.out.println( "Input was " + input.getText());
                 try
                 {
                     input_value = Double.parseDouble(input.getText());

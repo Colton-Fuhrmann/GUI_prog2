@@ -32,8 +32,8 @@ public class computation {
     int min;
     int sec;
     ui ui;
-    boolean constellations_on;
-    double minimum_vmag;
+    boolean constellations_on = false;
+    double minimum_vmag = 0;
     double vmag_range_low;
     double vmag_range_high;
     
@@ -158,31 +158,12 @@ public class computation {
                     {
                         //Set j to the index of the constellation abbr, 
                         //which causes it to drop out next time thorugh the loop
-                        j = k;
-                        
-                        /*for(int z = 0; z < constellation_objects[j].line_list.length; z++)
-                        {
-                            System.out.println(constellation_objects[j].line_list[z]);
-                        }
-
-                        System.out.print("\n\n");*/
-                        
+                        j = k;                  
                     }
                 }
                 
              if(j != -1) //If the constellation is not in the constellations.xml
              {
-                //System.out.println(current_star.constellation);
-                //System.exit(123);
-            
-                /*if(current_star.constellation.equals(" CMa "))
-                {
-                for(int z = 0; z < constellation_objects[j].name_table.length; z++)
-                {
-                    System.out.println(constellation_objects[j].name_table[z]);
-                }
-                }*/
-                
                 int in_list = 0;
                 int common_in_list = 0;
                 for(int l = 0; l < constellation_objects[j].line_list.length && in_list == 0; l++)
@@ -220,74 +201,17 @@ public class computation {
                 }
             
             }
-            /*if(current_star.constellation.equals(" CMa "))
-            {
-                System.out.println("\n\n");
-            for(int z = 0; z < constellation_objects[0].name_table.length; z++)
-            {
-                System.out.println(constellation_objects[j].name_table[z]);
-            }
-            System.out.println("\n\n");
-            }*/
-            
-
             }
 
-            stars.current_star_positions.add(x_y);
-        
-            //System.out.print(i);
-            //System.out.print( " star (x, y) for ");
-            //System.out.print(current_star.name);
-            //System.out.printf( " = %.3f %.3f\n", x_y.x, x_y.y);
-            
-            
-            //////////////////
-            //Draw star with current_star. variables for information and x y for position
-            /////////////////
-            
+            stars.current_star_positions.add(x_y); 
             i++;
             current_i.next();
         }
-        
-        /*  Testing the output to make sure we're calculating the right values
-        
-        for(i = 0; i < constellation_objects[0].line_list.length; i++)
-        {
-            System.out.println(constellation_objects[0].line_list[i]);
-        }
-        
-        System.out.print("\n\n");
-        
-        for(i = 0; i < constellation_objects[0].name_table.length; i++)
-        {
-            System.out.println(constellation_objects[0].name_table[i]);
-        }
-        
-        System.out.print("\n\n");
-        
-        for(i = 0; i < constellation_objects[0].value_table.length; i++)
-        {
-            System.out.print(constellation_objects[0].value_table[i].x);
-            System.out.print(", ");
-            System.out.print(constellation_objects[0].value_table[i].y);
-            System.out.print(", ");
-            System.out.println(constellation_objects[0].value_table[i].vmag);
-        }
-        
-        for(i = 0; i < stars.current_star_positions.size(); i++)
-        {
-            System.out.println(stars.current_star_positions.get(i).x);
-        }
-        
-        */
-         
     }
     
     //From StarPos
     public double elapsed_days()
     {
-
-
         // e.g., suppose current time is Oct 29, 2012 11:00:00 MST
         GregorianCalendar now_cal = new GregorianCalendar();
         GregorianCalendar then_cal = new GregorianCalendar();
@@ -379,6 +303,15 @@ public class computation {
         String name;
         star_contents current_star;
         
+        if(constellations_on == true)
+        {
+            for(int i = 0; i < constellation_abbr.length; i++)
+            {
+                constellation_objects[i].reset_hash_table();
+                constellation_objects[i].draw(g, panel_width, panel_height);
+            }     
+        }
+        
         for(int i = 0; i < stars.current_star_positions.size(); i++)
         {
             current_star = stars.star_array.get(i);
@@ -398,7 +331,7 @@ public class computation {
                 //Smallest values are brightest, therefore will need the largest radius
                 //Multiply by vmag_range to make the radius reasonably sized
                 //Absolute value to make them positive
-                radius = (int) Math.abs((vmag_range - current_star.vmag) * vmag_range);
+                radius = (int) Math.abs((vmag_range - current_star.vmag) + 1 * vmag_range);
                 
                 if(radius < 1)
                 {
@@ -409,7 +342,7 @@ public class computation {
                     radius = 20;
                 }
                 
-                opacity = (float) Math.abs((vmag_range - current_star.vmag)) / opacity_scale;
+                opacity = (float) Math.abs((vmag_range - current_star.vmag) + 1) / opacity_scale;
                 
                 if(opacity < .1)
                 {

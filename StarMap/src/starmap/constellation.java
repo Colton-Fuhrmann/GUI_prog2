@@ -4,6 +4,8 @@
  */
 package starmap;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import org.jdom2.*;
 import java.util.*;
 
@@ -17,6 +19,7 @@ public class constellation {
     public String[] name_table; //Hash table for the names of the stars
     public point[] value_table; //Values that correspond to the names in name_table[]
     public String[] line_list; //List of star names of line segments in constellation
+    String name;
     
     /////////////////////////////////////////////////
     //TODO pass in the xml node for the constellation that has the list of stars
@@ -46,6 +49,10 @@ public class constellation {
         //Go through all tags in node
         for(int i = 0; i < size; i++)
         {
+            if (((Element)children.get(i)).getName() == "name")
+            {
+                name = ((Element)children.get(i)).getValue();
+            }
             // If it's a line tag
             if (((Element)children.get(i)).getName() == "line")
             {
@@ -70,27 +77,36 @@ public class constellation {
         }
     }
     
-    public void draw()
+    public void draw(Graphics2D g, int panel_width, int panel_height)
     {
+        g.setColor(Color.pink);
         point point1 = new point();
         point point2 = new point();
         
-        for(int i = 0; i < table_size; i++)
+        /*for(int i = 0; i < table_size; i++)
         {
             System.out.println(line_list[i]);
-        }
+        }*/
         
-        for(int i = 0; i < table_size && line_list[i] != "invalid_star"; i++)
+        for(int i = 0; i < table_size - 1 && line_list[i + 1] != "invalid_star"; i++)
         {
           //line_list[i] is a star name
           //get_star_hash_value returns the (x, y) values of that star in a point
           point1 = get_star_hash_value(line_list[i]);
           i++;
           point2 = get_star_hash_value(line_list[i]);
-          
-          ///////////////////////////////////////////////
-          //TODO draw a line from point1 to point 2 in UI
+
+          if(!(point1.x == 0 && point1.y == 0) && !(point2.x == 0 && point2.y == 0))
+          {
+                        
+                g.drawLine((int)(point1.x * panel_width), (int)(point1.y * panel_height),
+                           (int)(point2.x * panel_width), (int)(point2.y * panel_height));
+          }
+
         }
+        
+        g.drawString(name, ((int)(point2.x * panel_width) + 1),
+                     ((int)(point2.y * panel_height)+ 1));
     }
     
     public int hash_star_name(String name)
@@ -109,7 +125,7 @@ public class constellation {
         //Use quadratic hashing to find available index for name
         for(i = 1; i < table_size; i++)
         {
-            if(name_table[index].equals("invalid_star")) //Spot is available
+            if(name_table[index].equals(name) || name_table[index].equals("invalid_star")) //Spot is available
             {
                 return index; //name hashes here
             }

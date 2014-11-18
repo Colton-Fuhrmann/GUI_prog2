@@ -51,6 +51,8 @@ public class toolbar extends JPanel
         // create a button for users to click to apply their changes
         JButton applyInput = new JButton( "Apply");
         applyInput.addActionListener( new applyButtonHandler());
+        JButton toggle_constellations = new JButton("Toggle");
+        toggle_constellations.addActionListener(new toggle_button_handler());
  
         top_row.add(lat.label);
         top_row.add(lat.input);
@@ -62,6 +64,7 @@ public class toolbar extends JPanel
         top_row.add(alt.input);
         top_row.add(vmag.label);
         top_row.add(vmag.input);
+        top_row.add(toggle_constellations);
         top_row.add(applyInput);
        
         bottom_row.add(year.label);
@@ -99,17 +102,21 @@ public class toolbar extends JPanel
             compute.user_changes_position(lat.input_value, lon.input_value,
                       azi.input_value, alt.input_value, year.input_value,
                       month.input_value, day.input_value, 
-                      min.input_value, hour.input_value, sec.input_value);
+                      hour.input_value, min.input_value, sec.input_value);
             
             drawArea.repaint();
         }
     }
     
-//        public void test(int x)
-//    {
-//        System.out.println("test");
-//        System.out.println(x);  
-//    }
-
+    //Event handler for apply button
+    private class toggle_button_handler implements ActionListener
+    {
+        @Override
+        public void actionPerformed( ActionEvent event )
+        {
+            compute.constellations_on = !compute.constellations_on;
+            drawArea.repaint();
+        }
+    }
 }
 
