@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package starmap;
+import java.awt.geom.Ellipse2D;
 
 /**
  *
@@ -22,6 +23,9 @@ public class star_contents
     double cos_alpha;
     double sin_delta;
     double cos_delta;
+    
+    Ellipse2D.Double ellipse;
+    Ellipse2D.Double tooltip_area;
 
     //Construct origin point
     public star_contents(String xml_HRnumber, String xml_name, 

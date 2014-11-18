@@ -26,8 +26,9 @@ public class StarMap {
 
         ui = new ui(compute);
         compute.set_ui(ui);
-        compute.user_changes_position(44.08, -103.23, 45, 45, 2014, 11, 10, 18, 20, 00);
-        
+
+        compute.user_changes_position(44.08, -103.23, 45, 45, 2014, 11, 10, 18, 20, 00, 1);
+        ui.drawArea.repaint();
 
         }
         

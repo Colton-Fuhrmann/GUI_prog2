@@ -10,6 +10,8 @@ import java.util.List;
 import org.jdom2.Element;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,14 +19,14 @@ import java.awt.*;
  */
 public class computation {
     
-    double ra = 1.770; //Sirius from star file
-    double dec = -0.292; //Sirius from star file
-    double lat = 0.769; //Computed from user entry 44.08
-    double lon = -1.802; //Computed from user entry -103.23
-    double azi = 5.074; //Computed from star, 290.709 degrees
-    double alt = -0.749; //-Computed from star, 42.932 degrees
-    double azi0 = Math.toRadians(45); //Supplied by user as azi
-    double alt0 = Math.toRadians(45); //Supplied by user as alt
+    double ra;
+    double dec;
+    double lat;
+    double lon;
+    double azi;
+    double alt;
+    double azi0;
+    double alt0;
     int year;
     int month;
     int day;
@@ -33,7 +35,7 @@ public class computation {
     int sec;
     ui ui;
     boolean constellations_on = false;
-    double minimum_vmag = 0;
+    double minimum_vmag = 3;
     double vmag_range_low;
     double vmag_range_high;
     
@@ -43,13 +45,14 @@ public class computation {
     ElementLister constellations;
     String[] constellation_abbr;
     constellation[] constellation_objects;
+    List<star_contents> onscreen_stars;
     
     public computation(String[] args)
     {
-    
         //Set defualt filenames
         String stars_filename = "../stars.xml";
         String constellations_filename = "../constellations.xml";
+        onscreen_stars = new ArrayList<>();
         
         //Check for command line arguments
         if(args.length == 1)
@@ -108,7 +111,8 @@ public class computation {
                                       double user_azi0, double user_alt0,
                                       double user_year, double user_month,
                                       double user_day, double user_hour,
-                                      double user_min, double user_sec)
+                                      double user_min, double user_sec,
+                                      double scale_factor)
     {
         lat = Math.toRadians(user_lat);
         lon = Math.toRadians(user_lon);
@@ -145,7 +149,7 @@ public class computation {
             
             //Set current star and compute the x and y values given user position
             star_contents current_star = stars.star_array.get(i);
-            x_y = compute_x_y(current_star);
+            x_y = compute_x_y(current_star, ui.drawArea.scale_factor);
             
             
             //If the star is in a constellation
@@ -227,7 +231,7 @@ public class computation {
     }
     
     //From StarPos
-    public point compute_x_y(star_contents current)
+    public point compute_x_y(star_contents current, double scale_factor)
     {
         // # days since June 10, 2005 6:45:14 GMT = 1957.093588
         double t = elapsed_days();
@@ -260,9 +264,9 @@ public class computation {
         if ( X < 0.0 ) azi = 2.0 * Math.PI - azi;
 
         // project star's (alt,azi) position on sphere to (x,y) coordinate on viewing window
-        double R = 1.0;		// distance to star: assume all stars are located on sphere of radius 1
-        double x = R * Math.cos( alt ) * Math.sin( azi - azi0 );
-        double y = R * ( Math.cos( alt0 ) * Math.sin( alt ) - Math.sin( alt0 ) * Math.cos( alt ) * Math.cos( azi - azi0 ) );
+        double R = 1;		// distance to star: assume all stars are located on sphere of radius 1
+        double x = .5 + (scale_factor * R * Math.cos( alt ) * Math.sin( azi - azi0 ));
+        double y = .5 + (scale_factor * R * ( Math.cos( alt0 ) * Math.sin( alt ) - Math.sin( alt0 ) * Math.cos( alt ) * Math.cos( azi - azi0 ) ) );
         double clip = Math.sin( alt0 ) * Math.sin ( alt ) + Math.cos( alt0 ) * Math.cos( alt ) * Math.cos( azi - azi0 );
         //System.out.printf( "\nstar position: (x,y) = (%.3f,%.3f)", x, y );
         
@@ -302,6 +306,8 @@ public class computation {
         float opacity; //Brighter stars have a higher opacity
         String name;
         star_contents current_star;
+        
+        onscreen_stars.clear(); //There are no stars onscreen currently
         
         if(constellations_on == true)
         {
@@ -352,11 +358,20 @@ public class computation {
                 {
                     opacity = 1;
                 }
+                else if(Float.isNaN(opacity))
+                {
+                    opacity = 0;
+                }
 
                 //Draw a star at the correct position with its radius and opacity
                 g.setColor(Color.white);
                 g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-                g.fillOval(x, y, radius, radius);
+                
+                //Set the current star's ellipse to have the computed radius
+                current_star.ellipse = new Ellipse2D.Double(x, y, radius, radius);
+                current_star.tooltip_area = new Ellipse2D.Double(x, y, radius + 2, radius + 2);
+                onscreen_stars.add(current_star); //Current star is onscreen
+                g.fill(current_star.ellipse); //Draw current star
                 
                 //Only display name if brighter than 2.5
                 if(current_star.vmag < 2.5)

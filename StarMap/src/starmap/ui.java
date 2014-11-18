@@ -18,6 +18,8 @@ public class ui extends JFrame
     private Container contents;
     public int x;
     star_panel drawArea;
+    
+    final toolbar toolbar;
 
     public ui(final computation compute)      
     {
@@ -26,13 +28,12 @@ public class ui extends JFrame
        
         contents = getContentPane();
        
-        Dimension content_size = new Dimension(600,600);
-        drawArea = new star_panel(compute);
+        Dimension content_size = new Dimension(800,800);
+        drawArea = new star_panel(compute, this);
         drawArea.setPreferredSize(content_size);
-        drawArea.setBackground(Color.black);
+        drawArea.setBackground(Color.black); 
 
-        final toolbar toolbar;
-        toolbar = new toolbar(compute, drawArea);
+        toolbar = new toolbar(compute, this);
         contents.add(toolbar, BorderLayout.NORTH);
         contents.add(drawArea, BorderLayout.CENTER);
        
@@ -41,57 +42,30 @@ public class ui extends JFrame
   
         //drawArea.repaint();
        
-        setVisible(true);     
+        setVisible(true);
+        setSize(toolbar.getWidth() , toolbar.getWidth() + toolbar.getHeight());
         pack();
-       
-  
-       
-        this.addMouseListener(new MouseAdapter(){
+        
+        System.out.println(toolbar.getHeight());
+        
+            
+        this.addComponentListener(new ComponentAdapter() 
+        {
             @Override
-            public void mousePressed(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e))
+            public void componentResized(ComponentEvent e) 
+            {   
+                Dimension size = contents.getSize();
+                
+                if(size.width < size.height - toolbar.getHeight())
                 {
-                System.out.println(e.getX());
-                System.out.println(e.getY());
+                    //size.width = size.height - toolbar.getHeight();
                 }
+                else
+                {
+                    //size.height = size.width + toolbar.getHeight();
+                }
+                
             }
         });
-        this.addMouseMotionListener(new MouseAdapter(){
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e))
-                {
-                  int x = e.getX();
-                  int y = e.getY();
-                 
-                  if( x < 0)
-                      x = 0;
-                  else if ( x > drawArea.getWidth() )
-                      x = drawArea.getWidth();
-                 
-                  if( y < 100)
-                      y = 100;
-                  else if ( y > drawArea.getHeight() )
-                      y = drawArea.getHeight();
-                 
-//                System.out.println(e.getX());
-//                System.out.println(e.getY());
-                System.out.println(x);
-                System.out.println(y);
-               
-                toolbar.alt.input_value = y/2 * 0.1f;
-                toolbar.azi.input_value = x/2 * 0.1f;
-               
-                compute.user_changes_position(toolbar.lat.input_value, toolbar.lon.input_value,
-                x/2 * 0.1f, y/2 * 0.1f, toolbar.year.input_value,
-                toolbar.month.input_value, toolbar.day.input_value,
-                toolbar.min.input_value, toolbar.hour.input_value, toolbar.sec.input_value);
-                drawArea.repaint();
-                }
-               
-
-            }
-        });
-
     }
 }
