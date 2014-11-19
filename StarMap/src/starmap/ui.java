@@ -45,27 +45,5 @@ public class ui extends JFrame
         setVisible(true);
         setSize(toolbar.getWidth() , toolbar.getWidth() + toolbar.getHeight());
         pack();
-        
-        System.out.println(toolbar.getHeight());
-        
-            
-        this.addComponentListener(new ComponentAdapter() 
-        {
-            @Override
-            public void componentResized(ComponentEvent e) 
-            {   
-                Dimension size = contents.getSize();
-                
-                if(size.width < size.height - toolbar.getHeight())
-                {
-                    //size.width = size.height - toolbar.getHeight();
-                }
-                else
-                {
-                    //size.height = size.width + toolbar.getHeight();
-                }
-                
-            }
-        });
     }
 }

@@ -48,6 +48,25 @@ public class toolbar extends JPanel
         sec = new toolbar_item(" Seconds: ", "00", 0, 0, 60);
         compute = passed_compute;
         
+        Color time_color = new Color(.9f, 1f, 1f);
+        Color lat_lon_color = new Color(1f, .9f, 1f);
+        Color azi_alt_color = new Color(1f, 1f, .9f);
+        Color vmag_color = new Color(.9f, 1f, .9f);
+        
+        year.input.setBackground(time_color);
+        month.input.setBackground(time_color);
+        day.input.setBackground(time_color);
+        hour.input.setBackground(time_color);
+        min.input.setBackground(time_color);
+        sec.input.setBackground(time_color);
+        
+        lat.input.setBackground(lat_lon_color);
+        lon.input.setBackground(lat_lon_color);
+        
+        azi.input.setBackground(azi_alt_color);
+        alt.input.setBackground(azi_alt_color);
+        
+        vmag.input.setBackground(vmag_color);
         
         // create a button for users to click to apply their changes
         JButton applyInput = new JButton( "Apply");
