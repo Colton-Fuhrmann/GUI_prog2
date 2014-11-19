@@ -143,8 +143,6 @@ public class star_panel extends JPanel implements Runnable
                 ui.toolbar.alt.input.setText(String.format("%.2f", ui.toolbar.alt.input_value));
                 ui.toolbar.azi.input.setText(String.format("%.2f", ui.toolbar.azi.input_value));
                 
-                
-
                 compute.user_changes_position(ui.toolbar.lat.input_value, ui.toolbar.lon.input_value,
                 ui.toolbar.azi.input_value , ui.toolbar.alt.input_value, ui.toolbar.year.input_value,
                 ui.toolbar.month.input_value, ui.toolbar.day.input_value,
@@ -155,8 +153,7 @@ public class star_panel extends JPanel implements Runnable
 
                 }
             }
-                        
-                        
+            
         });
         
         this.addMouseListener(new MouseAdapter(){

@@ -49,12 +49,12 @@ public class constellation {
         //Go through all tags in node
         for(int i = 0; i < size; i++)
         {
-            if (((Element)children.get(i)).getName() == "name")
+            if (((Element)children.get(i)).getName().equals("name"))
             {
                 name = ((Element)children.get(i)).getValue();
             }
             // If it's a line tag
-            if (((Element)children.get(i)).getName() == "line")
+            if (((Element)children.get(i)).getName().equals("line"))
             {
                 //Break into two strings, each holding a star name, 
                 //since the line tag is "star1 to star2"
@@ -88,7 +88,7 @@ public class constellation {
             System.out.println(line_list[i]);
         }*/
         
-        for(int i = 0; i < table_size - 1 && line_list[i + 1] != "invalid_star"; i++)
+        for(int i = 0; i < table_size - 1 && !line_list[i + 1].equals("invalid_star"); i++)
         {
           //line_list[i] is a star name
           //get_star_hash_value returns the (x, y) values of that star in a point
@@ -168,8 +168,6 @@ public class constellation {
             System.out.println(value_table[index].x);
             System.out.println(value_table[index].y);
         }*/
-        
-        return;
     }
     
     public point get_star_hash_value(String name)

@@ -21,6 +21,7 @@ public class toolbar_item
     public double input_value;
     public int min_value;
     public int max_value;
+    public double last_input_value;
     
     public toolbar_item(String passed_label_text, String passed_default_string, 
                         double passed_default_value, int min, int max)
@@ -28,9 +29,13 @@ public class toolbar_item
         label = new JLabel(passed_label_text);
         input = new JTextField(passed_default_string, 7);
         
+        label.setToolTipText("<html>" + passed_label_text + "<br>" + min + 
+                              " to " + max + "</html>");
+        
         label_text = passed_label_text;
         input_default = passed_default_string;
         input_value = passed_default_value;
+        last_input_value = passed_default_value;
         min_value = min;
         max_value = max;
         
@@ -45,12 +50,15 @@ public class toolbar_item
                 }
                 catch(NumberFormatException exception)
                 {
-                    input.setText(input_default);
+                    //input.setText(input_default);
+                    input.setText(Double.toString(last_input_value));
                 }
                 
                 if(input_value > max_value || input_value < min_value)
                 {
-                    input.setText(input_default);
+                    //input.setText(input_default);
+                    input.setText(Double.toString(last_input_value));
+
                 }               
             }
         } );
@@ -66,19 +74,25 @@ public class toolbar_item
                 }
                 catch(NumberFormatException exception)
                 {
-                    input.setText(input_default);
+                    //input.setText(input_default);
+                    input.setText(Double.toString(last_input_value));
+                    input_value = last_input_value;
+
                 }
 
                 if(input_value > max_value || input_value < min_value)
                 {
-                    input.setText(input_default);
+                    //input.setText(input_default);
+                    input.setText(Double.toString(last_input_value));
+                    input_value = last_input_value;
+
                 }               
             }
             
             @Override
             public void focusGained( FocusEvent event )
             {
-             
+
             }
         } );
         

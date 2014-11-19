@@ -47,14 +47,15 @@ public class toolbar extends JPanel
         min = new toolbar_item(" Minutes: ", "20", 20, 0, 60);
         sec = new toolbar_item(" Seconds: ", "00", 0, 0, 60);
         compute = passed_compute;
-
+        
         
         // create a button for users to click to apply their changes
         JButton applyInput = new JButton( "Apply");
         applyInput.addActionListener( new applyButtonHandler());
+        applyInput.setToolTipText("Update StarMap view");
         JButton toggle_constellations = new JButton("Toggle");
         toggle_constellations.addActionListener(new toggle_button_handler());
-        
+        toggle_constellations.setToolTipText("Toggle constellations on/off");
         
         top_row.add(year.label);
         top_row.add(year.input);
@@ -102,12 +103,25 @@ public class toolbar extends JPanel
         public void actionPerformed( ActionEvent event )
         {
             compute.minimum_vmag = vmag.input_value;
-            
-            compute.user_changes_position(lat.input_value, lon.input_value,
+                  
+            {
+                compute.user_changes_position(lat.input_value, lon.input_value,
                       azi.input_value, alt.input_value, year.input_value,
                       month.input_value, day.input_value, 
                       hour.input_value, min.input_value, sec.input_value, 
                       ui.drawArea.scale_factor);
+                
+                lat.last_input_value = lat.input_value;
+                lon.last_input_value = lon.input_value;
+                azi.last_input_value = azi.input_value;
+                alt.last_input_value = alt.input_value;
+                year.last_input_value = year.input_value;
+                month.last_input_value = month.input_value;
+                day.last_input_value = day.input_value;
+                hour.last_input_value = hour.input_value;
+                min.last_input_value = min.input_value;
+                sec.last_input_value = sec.input_value;
+            }
             
             ui.drawArea.repaint();
         }
