@@ -284,10 +284,15 @@ public class computation {
             {
                 vmag_range_low = current.vmag;
             }  
+            
+            x_y.x = x;
+            x_y.y = y;
         }
-        
-        x_y.x = x;
-        x_y.y = y;
+        else
+        {   
+            x_y.x = -9999;
+            x_y.y = -9999;
+        }
             
         return x_y;     
     }

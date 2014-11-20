@@ -96,7 +96,10 @@ public class constellation {
           i++;
           point2 = get_star_hash_value(line_list[i]);
 
-          if(!(point1.x == 0 && point1.y == 0) && !(point2.x == 0 && point2.y == 0))
+          //If both stars in this line should be drawn, draw the line
+          if(!(point1.x == 0 && point1.y == 0) && !(point2.x == 0 && point2.y == 0)
+                  && !(point1.x == -9999 && point1.y == -9999) && 
+                  !(point2.x == -9999 && point2.y == -9999))
           {
                         
                 g.drawLine((int)(point1.x * panel_width), (int)(point1.y * panel_height),
