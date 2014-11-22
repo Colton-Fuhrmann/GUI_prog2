@@ -25,6 +25,8 @@ public class star_panel extends JPanel implements Runnable
     ui ui;
     int usr_click_x;
     int usr_click_y;
+    int previous_x;
+    int previous_y;
     double scale_factor = 1;
     
     public void run()
@@ -112,20 +114,21 @@ public class star_panel extends JPanel implements Runnable
                
                   // allow user to go left or right with azi depending on if they
                   // drag their mouse left or right from where they first clicked
-                  if( x_diff < 0 )
+                  if( x_diff < 0 && previous_x != x )
                   {
                     ui.toolbar.azi.input_value = old_azi - 1;
                   }
-                  else
+                  else if ( x_diff > 0 && previous_x != x )
                     ui.toolbar.azi.input_value = old_azi + 1;
-
+                    
+                  
                   // allow user to move up or down depending on where they've
                   // dragged their cursor from initial click location
-                  if( y_diff < 0 )
-                    ui.toolbar.alt.input_value = old_alt - 1;
-                  else
-                    ui.toolbar.alt.input_value = old_alt + 1;
-               
+                  if( y_diff < 0 && previous_y != y )
+                    ui.toolbar.alt.input_value = old_alt - 2;
+                  else if ( y_diff > 0 && previous_y != y )
+                    ui.toolbar.alt.input_value = old_alt + 2;
+
                
                   // don't allow user to go past altitude of 0 or 90
                   if( ui.toolbar.alt.input_value > 90 )
@@ -148,9 +151,10 @@ public class star_panel extends JPanel implements Runnable
                 ui.toolbar.month.input_value, ui.toolbar.day.input_value,
                 ui.toolbar.hour.input_value, ui.toolbar.min.input_value, ui.toolbar.sec.input_value,
                 scale_factor);
-                ui.drawArea.repaint();
-               
-
+                ui.drawArea.repaint();         
+ 
+                previous_x = x;
+                previous_y = y;
                 }
             }
             
