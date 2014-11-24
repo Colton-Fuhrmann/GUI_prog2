@@ -31,7 +31,7 @@ public class toolbar_item
     {
         label = new JLabel(passed_label_text);
         input = new JTextField(passed_default_string, 7);
-        slider = new JSlider(min, max, min);
+        slider = new JSlider(min, max, (int)passed_default_value);
         
         label.setToolTipText("<html>" + passed_label_text + "<br>" + min + 
                               " to " + max + "</html>");
@@ -50,19 +50,19 @@ public class toolbar_item
             {
                 try
                 {
-                    input_value = Double.parseDouble(input.getText());
+                    input_value = Double.parseDouble(input.getText()) * 100;
                     slider.setValue((int)input_value);
                 }
                 catch(NumberFormatException exception)
                 {
-                    //input.setText(input_default);
                     input.setText(Double.toString(last_input_value));
+                    slider.setValue((int)(last_input_value));
                 }
                 
                 if(input_value > max_value || input_value < min_value)
                 {
-                    //input.setText(input_default);
                     input.setText(Double.toString(last_input_value));
+                    slider.setValue((int)(last_input_value));
 
                 }               
             }
@@ -75,22 +75,21 @@ public class toolbar_item
             {
                 try
                 {
-                    input_value = Double.parseDouble(input.getText());
+                    input_value = Double.parseDouble(input.getText()) * 100;
+                    slider.setValue((int)input_value);
                 }
                 catch(NumberFormatException exception)
                 {
-                    //input.setText(input_default);
-                    input.setText(Double.toString(last_input_value));
+                    input.setText(Double.toString((double)last_input_value));
                     input_value = last_input_value;
-
+                    slider.setValue((int)input_value);
                 }
 
                 if(input_value > max_value || input_value < min_value)
                 {
-                    //input.setText(input_default);
-                    input.setText(Double.toString(last_input_value));
-                    input_value = last_input_value;           
-
+                    input.setText(Double.toString((double)last_input_value));
+                    input_value = last_input_value;          
+                    slider.setValue((int)input_value);
                 }               
             }
             
@@ -101,11 +100,12 @@ public class toolbar_item
             }
         } );
 
+        
         slider.addChangeListener(new ChangeListener(){
             @Override
             public void stateChanged( ChangeEvent e) {
-                input.setText(String.valueOf(slider.getValue()));
-                input_value = slider.getValue();
+                input.setText(String.valueOf((double)slider.getValue()/100));
+                input_value = (double)slider.getValue()/100;
             }
         });
         

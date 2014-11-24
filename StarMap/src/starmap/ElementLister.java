@@ -103,28 +103,15 @@ public class ElementLister
             }
             
             if(current_name.equals("HRnumber"))
-            {
-//                System.out.print("Set HRnumber to ");
-//                System.out.print(current_value);
-//                System.out.print("\n");
-                
-                
+            {                  
                 HRnumber = current_value;
             }
             else if(current_name.equals("name"))
             {
-                //System.out.print("Set name to ");
-                //System.out.print(current_value);
-                //System.out.print("\n");
-                
                 name = current_value;
             }
             else if(current_name.equals("constellation"))
             {
-                //System.out.print("Set constellation to ");
-                //System.out.print(current_value);
-                //System.out.print("\n");
-                
                 constellation = current_value;
             }
             else if(current_name.equals("ra") && !current_name.isEmpty())
@@ -137,11 +124,6 @@ public class ElementLister
                 ra = Math.toRadians( ( Double.parseDouble(result[0]) 
                                     + Double.parseDouble(result[1]) / 60 
                                     + Double.parseDouble(result[2]) / 3600 ) * 15 );
-                
-                //System.out.print("Set ra to ");
-                //System.out.print(ra);
-                //System.out.print("\n");
-                
             }
             else if(current_name.equals("dec") && !current_name.isEmpty())
             {
@@ -154,35 +136,17 @@ public class ElementLister
                                       + Double.parseDouble(result[1]) / 60 
                                       + Double.parseDouble(result[2]) / 3600 );
                 if ( Double.parseDouble(result[0]) < 0 ) dec = -dec;
-                
-                //System.out.print("Set dec to ");
-                //System.out.print(dec);
-                //System.out.print("\n");
-                
             }
             else if(current_name.equals("vmag"))
             {
-                //System.out.print("Set vmag to ");
-                //System.out.print(current_value);
-                //System.out.print("\n");
-                
                 vmag = Double.parseDouble(current_value);
             }
             else if(current_name.equals("class"))
             {
-                
-                //System.out.print("Set star_class to ");
-                //System.out.print(current_value);
-                //System.out.print("\n");
-                
                 star_class = current_value;
             }
             else
             {
-                //System.out.print("Set common_name to ");
-                //System.out.print(current_value);
-                //System.out.print("\n");
-                
                 common_name = current_value;
             }         
 

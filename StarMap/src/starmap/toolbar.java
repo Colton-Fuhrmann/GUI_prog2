@@ -15,6 +15,7 @@ package starmap;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -28,39 +29,48 @@ public class toolbar extends JPanel
    computation compute;
    ui ui;
    
+   public SpinnerModel date_spinner;
+   public JSpinner j_spinner;
+   Date date_time_now, startDate, endDate;
+
     // constructor
     public toolbar(computation passed_compute, ui passed_ui)
     {    
         ui = passed_ui;
-       // add buttons to toolbar
+       // create toolbar and JPanel rows that will be added to toolbar
         JToolBar toolbar = new JToolBar();
         JPanel top_row = new JPanel(new GridLayout(1, 6));
         JPanel middle_row = new JPanel(new GridLayout(1, 6));
         JPanel bottom_row = new JPanel(new GridLayout(1, 6));
         JPanel second_row = new JPanel(new GridLayout(1,6));
-        JPanel fourth_row = new JPanel(new GridLayout(1,6));
-        toolbar.setLayout( new GridLayout(5, 1) );
+        toolbar.setLayout( new GridLayout(4, 1) );
        
+        //set compute object so compute_user_changes() can be called when a user
+        //changes inputs via toolbar
         compute = passed_compute;
         
-
-
+        // set the calendar to go from year 2006 to 5000
         Calendar cal = Calendar.getInstance();
-        Date now = cal.getTime();
+        date_time_now = cal.getTime();
         cal.add(Calendar.YEAR, -8);
-        Date startDate = cal.getTime();
+        startDate = cal.getTime();
         cal.add(Calendar.YEAR, 3000);
-        Date endDate = cal.getTime();
-        SpinnerModel model = new SpinnerDateModel(now, startDate, endDate, Calendar.YEAR);
-        JSpinner spinner = new JSpinner(model);
-        spinner.setEditor(new JSpinner.DateEditor(spinner,"dd/MM/yyyy hh/mm/ss"));
+        endDate = cal.getTime();
+        date_spinner = new SpinnerDateModel(date_time_now, startDate, endDate, 
+                       Calendar.YEAR);
+        j_spinner = new JSpinner(date_spinner);
+        // set the format of how j_spinner will look & set a user tooltip
+        j_spinner.setEditor(new JSpinner.DateEditor(j_spinner,"yyyy/MM/dd HH:mm:ss"));
+        j_spinner.setToolTipText("<html>Format: yyyy/MM/dd hh:mm:ss <br>" + 
+                "select time value and use spinner or enter<br> a valid date/time"
+                + " with the format above</html>");
         
-        
-        lat = new toolbar_item(" Latitude: ", "44.08", 44.08, -90, 90);
-        lon = new toolbar_item(" Longitude: ", "-103.23", -103.23, -180, 180);
-        azi = new toolbar_item(" Azimuth: ", "45", 45, 0, 360);
-        alt = new toolbar_item(" Altitude: ", "45", 45, 0, 90);
-        vmag = new toolbar_item(" Minimum Vmag: ", "3", 3, -2, 50);
+        // create all the toolbar_items the user will interact with/change
+        lat = new toolbar_item(" Latitude: ", "44.08", 4408, -9000, 9000);
+        lon = new toolbar_item(" Longitude: ", "-103.23", -10323, -18000, 18000);
+        azi = new toolbar_item(" Azimuth: ", "45", 4500, 0, 36000);
+        alt = new toolbar_item(" Altitude: ", "45", 4500, 0, 9000);
+        vmag = new toolbar_item(" Minimum Vmag: ", "3", 300, -200, 5000);
         year = new toolbar_item(" Year: ", "2014", 2014, 2006, 5000);
         month = new toolbar_item(" Month: ", "11", 11, 1, 12);
         day = new toolbar_item(" Day: ", "10", 10, 1, 31);
@@ -68,35 +78,27 @@ public class toolbar extends JPanel
         min = new toolbar_item(" Minutes: ", "20", 20, 0, 60);
         sec = new toolbar_item(" Seconds: ", "00", 0, 0, 60);
 
-        
-        Color time_color = new Color(.9f, 1f, 1f);
+        // create different colors for JTextFields so user can differentiate
+        // between related inputs, & set backgrounds
         Color lat_lon_color = new Color(1f, .9f, 1f);
         Color azi_alt_color = new Color(1f, 1f, .9f);
         Color vmag_color = new Color(.9f, 1f, .9f);
-        
-        year.input.setBackground(time_color);
-        month.input.setBackground(time_color);
-        day.input.setBackground(time_color);
-        hour.input.setBackground(time_color);
-        min.input.setBackground(time_color);
-        sec.input.setBackground(time_color);
-        
         lat.input.setBackground(lat_lon_color);
         lon.input.setBackground(lat_lon_color);
-        
         azi.input.setBackground(azi_alt_color);
         alt.input.setBackground(azi_alt_color);
-        
         vmag.input.setBackground(vmag_color);
         
         // create a button for users to click to apply their changes
         JButton applyInput = new JButton( "Apply");
         applyInput.addActionListener( new applyButtonHandler());
         applyInput.setToolTipText("Update StarMap view");
-        JButton toggle_constellations = new JButton("Toggle");
+        // create button to toggle constellations
+        JButton toggle_constellations = new JButton("Toggle constellations");
         toggle_constellations.addActionListener(new toggle_button_handler());
         toggle_constellations.setToolTipText("Toggle constellations on/off");
         
+        // populate JPanels and then add them to the toolbar below
         top_row.add(azi.label);
         top_row.add(azi.input);
         top_row.add(alt.label);
@@ -111,45 +113,47 @@ public class toolbar extends JPanel
         second_row.add(lat.slider);
         second_row.add(lon.slider);
 
-        middle_row.add(year.label);
-        middle_row.add(year.input);
-        middle_row.add(month.label);
-        middle_row.add(month.input);
-        middle_row.add(day.label);
-        middle_row.add(day.input);
-        middle_row.add(hour.label);
-        middle_row.add(hour.input);
-        middle_row.add(min.label);
-        middle_row.add(min.input);
-        middle_row.add(sec.label);
-        middle_row.add(sec.input);
-
-        fourth_row.add(year.slider);
-        fourth_row.add(month.slider);
-        fourth_row.add(day.slider);
-        fourth_row.add(hour.slider);
-        fourth_row.add(min.slider);
-        fourth_row.add(sec.slider);
+        middle_row.add(vmag.label);
+        middle_row.add(vmag.input);
+        middle_row.add(vmag.slider);
         
-        bottom_row.add(vmag.label);
-        bottom_row.add(vmag.input);
-        bottom_row.add(spinner);
+        bottom_row.add(j_spinner);
         bottom_row.add(toggle_constellations);
         bottom_row.add(applyInput);
        
         toolbar.add(top_row);
         toolbar.add(second_row);
         toolbar.add(middle_row);
-        toolbar.add(fourth_row);
         toolbar.add(bottom_row);
 
         this.add(toolbar);
         
+        
+        // whenever the date spinner is changed by the user, the star positions
+        // are calculated with the new time values and the drawArea is repainted
+        j_spinner.addChangeListener(new ChangeListener(){
+        @Override
+        public void stateChanged( ChangeEvent e) {
+            compute.user_changes_position(lat.input_value, lon.input_value,
+                  azi.input_value, alt.input_value, 
+                  Integer.parseInt(new SimpleDateFormat("yyyy").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("MM").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("dd").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("HH").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("mm").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("ss").format(date_spinner.getValue())), 
+                  ui.drawArea.scale_factor);
+            ui.drawArea.repaint();
+            
+            }
+        });
+        
+        // updates the star view when latitude slider is changed
         lat.slider.addChangeListener(new ChangeListener(){
         @Override
         public void stateChanged( ChangeEvent e) {
-            lat.input.setText(String.valueOf(lat.slider.getValue()));
-            lat.input_value = lat.slider.getValue();
+            lat.input.setText(String.valueOf((double)lat.slider.getValue()/100));
+            lat.input_value = (double)lat.slider.getValue()/100;
 
             compute.user_changes_position(lat.input_value, lon.input_value,
                   azi.input_value, alt.input_value, year.input_value,
@@ -159,11 +163,13 @@ public class toolbar extends JPanel
             ui.drawArea.repaint();
             }
         });
+        
+        // updates the star view when longitude slider is changed
         lon.slider.addChangeListener(new ChangeListener(){
         @Override
         public void stateChanged( ChangeEvent e) {
-            lon.input.setText(String.valueOf(lon.slider.getValue()));
-            lon.input_value = lon.slider.getValue();
+            lon.input.setText(String.valueOf((double)lon.slider.getValue()/100));
+            lon.input_value = (double)lon.slider.getValue()/100;
 
             compute.user_changes_position(lat.input_value, lon.input_value,
                   azi.input_value, alt.input_value, year.input_value,
@@ -173,11 +179,13 @@ public class toolbar extends JPanel
             ui.drawArea.repaint();
             }
         });
+        
+        // updates the star view when azimuth slider is changed
         azi.slider.addChangeListener(new ChangeListener(){
         @Override
         public void stateChanged( ChangeEvent e) {
-            azi.input.setText(String.valueOf(azi.slider.getValue()));
-            azi.input_value = azi.slider.getValue();
+            azi.input.setText(String.valueOf((double)azi.slider.getValue()/100));
+            azi.input_value = (double)azi.slider.getValue()/100;
 
             compute.user_changes_position(lat.input_value, lon.input_value,
                   azi.input_value, alt.input_value, year.input_value,
@@ -187,11 +195,13 @@ public class toolbar extends JPanel
             ui.drawArea.repaint();
             }
         });
+        
+        // updates the star view when altitude slider is changed
         alt.slider.addChangeListener(new ChangeListener(){
         @Override
         public void stateChanged( ChangeEvent e) {
-            alt.input.setText(String.valueOf(alt.slider.getValue()));
-            alt.input_value = alt.slider.getValue();
+            alt.input.setText(String.valueOf((double)alt.slider.getValue()/100));
+            alt.input_value = (double)alt.slider.getValue()/100;
 
             compute.user_changes_position(lat.input_value, lon.input_value,
                   azi.input_value, alt.input_value, year.input_value,
@@ -201,6 +211,26 @@ public class toolbar extends JPanel
             ui.drawArea.repaint();
             }
         });
+        
+        // updates the star view when vmag slider is changed
+        vmag.slider.addChangeListener(new ChangeListener(){
+        @Override
+        public void stateChanged( ChangeEvent e) {
+            vmag.input.setText(String.valueOf(((double)vmag.slider.getValue()/100)));
+            vmag.input_value = ((double)vmag.slider.getValue()/100);
+            
+            // slider changed vmag, set vmag and recompute to show more/less
+            // stars
+            compute.minimum_vmag = vmag.input_value;
+            compute.user_changes_position(lat.input_value, lon.input_value,
+                  azi.input_value, alt.input_value, year.input_value,
+                  month.input_value, day.input_value, 
+                  hour.input_value, min.input_value, sec.input_value, 
+                  ui.drawArea.scale_factor);
+            ui.drawArea.repaint();
+            }
+        });
+
         // misc
         //setSize( 360, 250 );
         //setLocationRelativeTo( null );
@@ -222,6 +252,8 @@ public class toolbar extends JPanel
                       hour.input_value, min.input_value, sec.input_value, 
                       ui.drawArea.scale_factor);
                 
+                // keep track of last value entered to handle when user
+                // enters out of bounds input
                 lat.last_input_value = lat.input_value;
                 lon.last_input_value = lon.input_value;
                 azi.last_input_value = azi.input_value;

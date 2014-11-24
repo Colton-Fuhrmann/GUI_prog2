@@ -108,8 +108,11 @@ public class constellation {
 
         }
         
-        g.drawString(name, ((int)(point2.x * panel_width) + 1),
+        if( point2.x != -9999 && point2.y != -9999 )
+        {
+            g.drawString(name, ((int)(point2.x * panel_width) + 1),
                      ((int)(point2.y * panel_height)+ 1));
+        }
     }
     
     public int hash_star_name(String name)

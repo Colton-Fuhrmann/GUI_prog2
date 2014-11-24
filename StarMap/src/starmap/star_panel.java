@@ -103,10 +103,11 @@ public class star_panel extends JPanel implements Runnable
                   else if ( y > ui.drawArea.getHeight() )
                       y = ui.drawArea.getHeight();
                  
-                  // compute difference of where user clicked and where they
-                  // are currently dragging their cursor at
-                  int x_diff = usr_click_x - x;
-                  int y_diff = usr_click_y - y;
+                  // compute difference of where the cursor is now and where it
+                  // was before. This is used to tell which way the user is
+                  // dragging
+                  int x_diff = previous_x - x;
+                  int y_diff = previous_y - y;
                
                   // store the azi and alt values of the drag iteration
                   double old_azi = ui.toolbar.azi.input_value;
@@ -145,6 +146,10 @@ public class star_panel extends JPanel implements Runnable
                 //Update text in fields
                 ui.toolbar.alt.input.setText(String.format("%.2f", ui.toolbar.alt.input_value));
                 ui.toolbar.azi.input.setText(String.format("%.2f", ui.toolbar.azi.input_value));
+                
+                // update slider values
+                ui.toolbar.azi.slider.setValue((int)ui.toolbar.azi.input_value*100);
+                ui.toolbar.alt.slider.setValue((int)ui.toolbar.alt.input_value*100);
                 
                 compute.user_changes_position(ui.toolbar.lat.input_value, ui.toolbar.lon.input_value,
                 ui.toolbar.azi.input_value , ui.toolbar.alt.input_value, ui.toolbar.year.input_value,

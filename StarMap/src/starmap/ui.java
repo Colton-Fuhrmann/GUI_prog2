@@ -28,13 +28,13 @@ public class ui extends JFrame
        
         contents = getContentPane();
        
+        toolbar = new toolbar(compute, this);
+        contents.add(toolbar, BorderLayout.NORTH);
+        
         Dimension content_size = new Dimension(800,800);
         drawArea = new star_panel(compute, this);
         drawArea.setPreferredSize(content_size);
         drawArea.setBackground(Color.black); 
-
-        toolbar = new toolbar(compute, this);
-        contents.add(toolbar, BorderLayout.NORTH);
         contents.add(drawArea, BorderLayout.CENTER);
        
         setLocationRelativeTo( null );
