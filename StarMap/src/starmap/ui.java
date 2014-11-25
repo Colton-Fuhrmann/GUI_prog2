@@ -1,7 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+////////////////////////////////////////////////////////////////////////////////
+//Authors: Colton Fuhrmann, Kevin Hilt
+//Date: November 24, 2014
+//Course: CSC421
+//Instructor: Dr. Weiss
+//
+//Description: The ui class provides the main frame for the application. It
+//contains a toolbar at the north position for user input and a central
+//drawing area where the stars will be drawn.
+////////////////////////////////////////////////////////////////////////////////
 package starmap;
 
 import javax.swing.*;

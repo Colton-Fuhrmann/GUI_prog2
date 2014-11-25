@@ -1,7 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+////////////////////////////////////////////////////////////////////////////////
+//Authors: Colton Fuhrmann, Kevin Hilt
+//Date: November 24, 2014
+//Course: CSC421
+//Instructor: Dr. Weiss
+//
+//Description: The constellation class stores the information for a given
+//constellation, as well as several lists of points or included stars that
+//aid in drawing the constellations when enabled.
+////////////////////////////////////////////////////////////////////////////////
 package starmap;
 
 import java.awt.Color;
@@ -69,6 +75,8 @@ public class constellation {
         }
     }
     
+    //Reset the values in a hash table (only name_table[] for now, but could
+    //work for any)
     public void reset_hash_table()
     {
         for(int i = 0; i < table_size; i++)
@@ -77,6 +85,7 @@ public class constellation {
         }
     }
     
+    //Draw the constellation
     public void draw(Graphics2D g, int panel_width, int panel_height)
     {
         g.setColor(Color.pink);
@@ -115,6 +124,9 @@ public class constellation {
         }
     }
     
+    //Given the passed string, hash the star name to a spot in the tables
+    //(All hash tables are of the same size and will have the stars be at
+    //the same indices)
     public int hash_star_name(String name)
     {
         int index = 0;
@@ -176,6 +188,7 @@ public class constellation {
         }*/
     }
     
+    //Returns a point with the (x, y) position for the passed star name
     public point get_star_hash_value(String name)
     {
         int index = hash_star_name(name); //Get hash value for star name

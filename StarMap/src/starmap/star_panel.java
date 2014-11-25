@@ -1,7 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+////////////////////////////////////////////////////////////////////////////////
+//Authors: Colton Fuhrmann, Kevin Hilt
+//Date: November 24, 2014
+//Course: CSC421
+//Instructor: Dr. Weiss
+//
+//Description: The star_panel class is the drawing area where the stars will
+//be drawn. It handles the mouse motion for panning and zooming, as well as
+//calling the appropriate functions to redraw the stars when there is a change
+//of position/
+////////////////////////////////////////////////////////////////////////////////
 package starmap;
 
 import javax.swing.*;
@@ -12,6 +19,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -27,7 +35,7 @@ public class star_panel extends JPanel implements Runnable
     int usr_click_y;
     int previous_x;
     int previous_y;
-    double scale_factor = 1;
+    double scale_factor;
     
     public void run()
     {
@@ -41,6 +49,7 @@ public class star_panel extends JPanel implements Runnable
         //Save computation object so paintComponent() can call its draw_stars() method
         compute = passed_compute; 
         ui = passed_ui;
+        scale_factor = 1;
         
         ToolTipManager.sharedInstance().setDismissDelay(1000000);
         
@@ -152,10 +161,14 @@ public class star_panel extends JPanel implements Runnable
                 ui.toolbar.alt.slider.setValue((int)ui.toolbar.alt.input_value*100);
                 
                 compute.user_changes_position(ui.toolbar.lat.input_value, ui.toolbar.lon.input_value,
-                ui.toolbar.azi.input_value , ui.toolbar.alt.input_value, ui.toolbar.year.input_value,
-                ui.toolbar.month.input_value, ui.toolbar.day.input_value,
-                ui.toolbar.hour.input_value, ui.toolbar.min.input_value, ui.toolbar.sec.input_value,
-                scale_factor);
+                                              ui.toolbar.azi.input_value , ui.toolbar.alt.input_value,
+                                              Integer.parseInt(new SimpleDateFormat("yyyy").format(ui.toolbar.date_spinner.getValue())),
+                                              Integer.parseInt(new SimpleDateFormat("MM").format(ui.toolbar.date_spinner.getValue())), 
+                                              Integer.parseInt(new SimpleDateFormat("dd").format(ui.toolbar.date_spinner.getValue())),
+                                              Integer.parseInt(new SimpleDateFormat("HH").format(ui.toolbar.date_spinner.getValue())), 
+                                              Integer.parseInt(new SimpleDateFormat("mm").format(ui.toolbar.date_spinner.getValue())), 
+                                              Integer.parseInt(new SimpleDateFormat("ss").format(ui.toolbar.date_spinner.getValue())),
+                                              scale_factor);
                 ui.drawArea.repaint();         
  
                 previous_x = x;
@@ -204,9 +217,13 @@ public class star_panel extends JPanel implements Runnable
                 }
                 
                 compute.user_changes_position(ui.toolbar.lat.input_value, ui.toolbar.lon.input_value,
-                ui.toolbar.azi.input_value , ui.toolbar.alt.input_value, ui.toolbar.year.input_value,
-                ui.toolbar.month.input_value, ui.toolbar.day.input_value,
-                ui.toolbar.hour.input_value, ui.toolbar.min.input_value, ui.toolbar.sec.input_value,
+                ui.toolbar.azi.input_value , ui.toolbar.alt.input_value, 
+                Integer.parseInt(new SimpleDateFormat("yyyy").format(ui.toolbar.date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("MM").format(ui.toolbar.date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("dd").format(ui.toolbar.date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("HH").format(ui.toolbar.date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("mm").format(ui.toolbar.date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("ss").format(ui.toolbar.date_spinner.getValue())),
                 scale_factor);
                 ui.drawArea.repaint();
             }

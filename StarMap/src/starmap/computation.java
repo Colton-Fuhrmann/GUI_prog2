@@ -1,7 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+////////////////////////////////////////////////////////////////////////////////
+//Authors: Colton Fuhrmann, Kevin Hilt
+//Date: November 24, 2014
+//Course: CSC421
+//Instructor: Dr. Weiss
+//
+//Description: The computation class handles the calculations behind the
+//which stars should be displayed and their (x, y) coordinates on the screen
+//given the user-specified values.
+//
+//The calculations to arrive at the (x, y) values are from Dr. Weiss' code:
+//http://www.mcs.sdsmt.edu/csc421/Assignments/PA2/StarPos.java
+//Sections where this is applicable are noted with comments below.
+////////////////////////////////////////////////////////////////////////////////
 package starmap;
 
 import java.util.GregorianCalendar;
@@ -107,6 +117,8 @@ public class computation {
         }   
     }
     
+    //Called when the user changes the star position and a redraw
+    //will be happening
     public void user_changes_position(double user_lat, double user_lon,
                                       double user_azi0, double user_alt0,
                                       double user_year, double user_month,
@@ -202,8 +214,7 @@ public class computation {
                         constellation_objects[j].set_star_hash_value(current_star.name,
                                                           x_y.x, x_y.y);
                     }
-                }
-            
+                }         
             }
             }
 
@@ -213,7 +224,8 @@ public class computation {
         }
     }
     
-    //From StarPos
+    //The majority of this calculation is from Dr. Weiss' code
+    //http://www.mcs.sdsmt.edu/csc421/Assignments/PA2/StarPos.java
     public double elapsed_days()
     {
         // e.g., suppose current time is Oct 29, 2012 11:00:00 MST
@@ -230,7 +242,8 @@ public class computation {
         return diff_days;
     }
     
-    //From StarPos
+    //The majority of this calculation is from Dr. Weiss' code
+    //http://www.mcs.sdsmt.edu/csc421/Assignments/PA2/StarPos.java
     public point compute_x_y(star_contents current, double scale_factor)
     {
         // # days since June 10, 2005 6:45:14 GMT = 1957.093588
@@ -297,11 +310,14 @@ public class computation {
         return x_y;     
     }
     
+    //Save the ui for reference in this class
     public void set_ui(ui passed_ui)
     {
         ui = passed_ui;
     }
     
+    //Star stars at their new positions suing the passed Graphics2D object
+    //from the star_panel
     public void draw_stars(Graphics2D g, int panel_width, int panel_height)
     {
         int x, y; //Position of star

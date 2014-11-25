@@ -1,11 +1,16 @@
-// ToolBarDemo.java
-// Author: John M. Weiss, Ph.D.
-// Class: CSC421/521 GUI-OOP Fall 2014
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+////////////////////////////////////////////////////////////////////////////////
+//Authors: Colton Fuhrmann, Kevin Hilt
+//Date: November 24, 2014
+//Course: CSC421
+//Instructor: Dr. Weiss
+//
+//Description: The toolbar class handles populating an area with the input
+//widgets that will later be inserted into the top of the ui. A part of this
+//population includes defining the slider event handlers.
+//
+//The basic toolbar initialization is from Dr. Weiss' code:
+//http://www.mcs.sdsmt.edu/csc421/Code/Java/Swing/ToolBarDemo.java
+////////////////////////////////////////////////////////////////////////////////
 package starmap;
 
 /**
@@ -25,7 +30,7 @@ import java.util.Date;
 // toolbar demo class
 public class toolbar extends JPanel
 {
-   public toolbar_item lat, lon, azi, alt, vmag, year, month, day, hour, min, sec;
+   public toolbar_item lat, lon, azi, alt, vmag;
    computation compute;
    ui ui;
    
@@ -71,12 +76,6 @@ public class toolbar extends JPanel
         azi = new toolbar_item(" Azimuth: ", "45", 4500, 0, 36000);
         alt = new toolbar_item(" Altitude: ", "45", 4500, 0, 9000);
         vmag = new toolbar_item(" Minimum Vmag: ", "3", 300, -200, 5000);
-        year = new toolbar_item(" Year: ", "2014", 2014, 2006, 5000);
-        month = new toolbar_item(" Month: ", "11", 11, 1, 12);
-        day = new toolbar_item(" Day: ", "10", 10, 1, 31);
-        hour = new toolbar_item(" Hours: ", "18", 18, 0, 23);
-        min = new toolbar_item(" Minutes: ", "20", 20, 0, 60);
-        sec = new toolbar_item(" Seconds: ", "00", 0, 0, 60);
 
         // create different colors for JTextFields so user can differentiate
         // between related inputs, & set backgrounds
@@ -156,9 +155,13 @@ public class toolbar extends JPanel
             lat.input_value = (double)lat.slider.getValue()/100;
 
             compute.user_changes_position(lat.input_value, lon.input_value,
-                  azi.input_value, alt.input_value, year.input_value,
-                  month.input_value, day.input_value, 
-                  hour.input_value, min.input_value, sec.input_value, 
+                  azi.input_value, alt.input_value, 
+                  Integer.parseInt(new SimpleDateFormat("yyyy").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("MM").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("dd").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("HH").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("mm").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("ss").format(date_spinner.getValue())), 
                   ui.drawArea.scale_factor);
             ui.drawArea.repaint();
             }
@@ -172,9 +175,13 @@ public class toolbar extends JPanel
             lon.input_value = (double)lon.slider.getValue()/100;
 
             compute.user_changes_position(lat.input_value, lon.input_value,
-                  azi.input_value, alt.input_value, year.input_value,
-                  month.input_value, day.input_value, 
-                  hour.input_value, min.input_value, sec.input_value, 
+                  azi.input_value, alt.input_value, 
+                  Integer.parseInt(new SimpleDateFormat("yyyy").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("MM").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("dd").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("HH").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("mm").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("ss").format(date_spinner.getValue())), 
                   ui.drawArea.scale_factor);
             ui.drawArea.repaint();
             }
@@ -188,9 +195,13 @@ public class toolbar extends JPanel
             azi.input_value = (double)azi.slider.getValue()/100;
 
             compute.user_changes_position(lat.input_value, lon.input_value,
-                  azi.input_value, alt.input_value, year.input_value,
-                  month.input_value, day.input_value, 
-                  hour.input_value, min.input_value, sec.input_value, 
+                  azi.input_value, alt.input_value, 
+                  Integer.parseInt(new SimpleDateFormat("yyyy").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("MM").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("dd").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("HH").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("mm").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("ss").format(date_spinner.getValue())), 
                   ui.drawArea.scale_factor);
             ui.drawArea.repaint();
             }
@@ -204,9 +215,13 @@ public class toolbar extends JPanel
             alt.input_value = (double)alt.slider.getValue()/100;
 
             compute.user_changes_position(lat.input_value, lon.input_value,
-                  azi.input_value, alt.input_value, year.input_value,
-                  month.input_value, day.input_value, 
-                  hour.input_value, min.input_value, sec.input_value, 
+                  azi.input_value, alt.input_value, 
+                  Integer.parseInt(new SimpleDateFormat("yyyy").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("MM").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("dd").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("HH").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("mm").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("ss").format(date_spinner.getValue())),
                   ui.drawArea.scale_factor);
             ui.drawArea.repaint();
             }
@@ -215,17 +230,23 @@ public class toolbar extends JPanel
         // updates the star view when vmag slider is changed
         vmag.slider.addChangeListener(new ChangeListener(){
         @Override
-        public void stateChanged( ChangeEvent e) {
+        public void stateChanged(ChangeEvent e) {
             vmag.input.setText(String.valueOf(((double)vmag.slider.getValue()/100)));
             vmag.input_value = ((double)vmag.slider.getValue()/100);
+            
             
             // slider changed vmag, set vmag and recompute to show more/less
             // stars
             compute.minimum_vmag = vmag.input_value;
+            
             compute.user_changes_position(lat.input_value, lon.input_value,
-                  azi.input_value, alt.input_value, year.input_value,
-                  month.input_value, day.input_value, 
-                  hour.input_value, min.input_value, sec.input_value, 
+                  azi.input_value, alt.input_value, 
+                  Integer.parseInt(new SimpleDateFormat("yyyy").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("MM").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("dd").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("HH").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("mm").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("ss").format(date_spinner.getValue())), 
                   ui.drawArea.scale_factor);
             ui.drawArea.repaint();
             }
@@ -243,28 +264,27 @@ public class toolbar extends JPanel
         @Override
         public void actionPerformed( ActionEvent event )
         {
+            
+            vmag.input.setText(String.valueOf(((double)vmag.slider.getValue()/100)));
+            vmag.input_value = ((double)vmag.slider.getValue()/100);
             compute.minimum_vmag = vmag.input_value;
-                  
-            {
-                compute.user_changes_position(lat.input_value, lon.input_value,
-                      azi.input_value, alt.input_value, year.input_value,
-                      month.input_value, day.input_value, 
-                      hour.input_value, min.input_value, sec.input_value, 
-                      ui.drawArea.scale_factor);
-                
-                // keep track of last value entered to handle when user
-                // enters out of bounds input
-                lat.last_input_value = lat.input_value;
-                lon.last_input_value = lon.input_value;
-                azi.last_input_value = azi.input_value;
-                alt.last_input_value = alt.input_value;
-                year.last_input_value = year.input_value;
-                month.last_input_value = month.input_value;
-                day.last_input_value = day.input_value;
-                hour.last_input_value = hour.input_value;
-                min.last_input_value = min.input_value;
-                sec.last_input_value = sec.input_value;
-            }
+
+            compute.user_changes_position(lat.input_value, lon.input_value,
+                  azi.input_value, alt.input_value, 
+                  Integer.parseInt(new SimpleDateFormat("yyyy").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("MM").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("dd").format(date_spinner.getValue())),
+                  Integer.parseInt(new SimpleDateFormat("HH").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("mm").format(date_spinner.getValue())), 
+                  Integer.parseInt(new SimpleDateFormat("ss").format(date_spinner.getValue())), 
+                  ui.drawArea.scale_factor);
+
+            // keep track of last value entered to handle when user
+            // enters out of bounds input
+            lat.last_input_value = lat.input_value;
+            lon.last_input_value = lon.input_value;
+            azi.last_input_value = azi.input_value;
+            alt.last_input_value = alt.input_value;
             
             ui.drawArea.repaint();
         }

@@ -1,7 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+////////////////////////////////////////////////////////////////////////////////
+//Authors: Colton Fuhrmann, Kevin Hilt
+//Date: November 24, 2014
+//Course: CSC421
+//Instructor: Dr. Weiss
+//
+//Description: The star_contents class stores all the information from an XML
+//node in an object for that star.
+////////////////////////////////////////////////////////////////////////////////
 package starmap;
 import java.awt.geom.Ellipse2D;
 

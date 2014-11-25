@@ -1,7 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+////////////////////////////////////////////////////////////////////////////////
+//Authors: Colton Fuhrmann, Kevin Hilt
+//Date: November 24, 2014
+//Course: CSC421
+//Instructor: Dr. Weiss
+//
+//Description: The toolbar_item class defines a basic toolbar input widget,
+//giving it a container for its default values, range bounds, input elements,
+//and event handlers.
+////////////////////////////////////////////////////////////////////////////////
 package starmap;
 
 import java.awt.*;

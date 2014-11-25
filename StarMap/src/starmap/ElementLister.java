@@ -1,7 +1,16 @@
-// ElementLister.java
-// Use JDOM to parse an XML file
-// Based on Java example in Processing XML with Java (Elliotte Harold).
-// JMW Fall 2014
+////////////////////////////////////////////////////////////////////////////////
+//Authors: Colton Fuhrmann, Kevin Hilt
+//Date: November 24, 2014
+//Course: CSC421
+//Instructor: Dr. Weiss
+//
+//Description: The ElementLister class handles reading in XML from a file
+//and storing it in several structures that hold the information about the
+//stars.
+//
+//The XML parsing is from Dr. Weiss' code:
+//http://www.mcs.sdsmt.edu/csc421/Assignments/PA2/ElementLister.java
+////////////////////////////////////////////////////////////////////////////////
 
 package starmap;
 
@@ -21,6 +30,8 @@ public class ElementLister
     
     
     //Updated main function to be constructor
+    //The majority of this parsing is from Dr. Weiss' code
+    //http://www.mcs.sdsmt.edu/csc421/Assignments/PA2/ElementLister.java
     public ElementLister( String filename )
     {
 	// read and parse XML document
@@ -44,6 +55,8 @@ public class ElementLister
     }
 
     // print XML tags and leaf node values
+    //The majority of this parsing is from Dr. Weiss' code
+    //http://www.mcs.sdsmt.edu/csc421/Assignments/PA2/ElementLister.java
     public void listChildren( Element current, int depth )
     {
 	// get children of current node
@@ -66,6 +79,8 @@ public class ElementLister
     }
 
     // indent to show hierarchical structure of XML tree
+    //The majority of this parsing is from Dr. Weiss' code
+    //http://www.mcs.sdsmt.edu/csc421/Assignments/PA2/ElementLister.java
     private void printSpaces( int n )
     {
         for ( int i = 0; i < n; i++ )
@@ -74,6 +89,8 @@ public class ElementLister
         }
     }
     
+    //Takes star information from the XML and stores in an array
+    //to be referenced later
     public void put_star_in_array(Element star)
     {
 	// get children of current node
@@ -162,6 +179,7 @@ public class ElementLister
         star_array.add(current_contents);
     }
     
+    //Returns the appropriate node for the passed constellation abbreviation
     public Element get_node_from_abbr( Element current, String abbr_value)
     {
 	// get children of current node
@@ -217,6 +235,5 @@ public class ElementLister
         Arrays.sort(abbr);
         
         return abbr;
-        
     }
 }
