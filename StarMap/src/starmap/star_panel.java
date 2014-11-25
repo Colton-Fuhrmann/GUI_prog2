@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
  *
  * @author 7106215
  */
-public class star_panel extends JPanel implements Runnable
+public class star_panel extends JPanel 
 {
     computation compute;
     boolean displaying_tooltip;
@@ -36,11 +36,6 @@ public class star_panel extends JPanel implements Runnable
     int previous_x;
     int previous_y;
     double scale_factor;
-    
-    public void run()
-    {
-        System.out.println("Started thread");
-    }
     
     public star_panel(computation passed_compute, ui passed_ui)
     {
@@ -169,6 +164,7 @@ public class star_panel extends JPanel implements Runnable
                                               Integer.parseInt(new SimpleDateFormat("mm").format(ui.toolbar.date_spinner.getValue())), 
                                               Integer.parseInt(new SimpleDateFormat("ss").format(ui.toolbar.date_spinner.getValue())),
                                               scale_factor);
+                
                 ui.drawArea.repaint();         
  
                 previous_x = x;

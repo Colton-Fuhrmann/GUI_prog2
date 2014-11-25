@@ -89,9 +89,9 @@ public class toolbar extends JPanel
         vmag.input.setBackground(vmag_color);
         
         // create a button for users to click to apply their changes
-        JButton applyInput = new JButton( "Apply");
-        applyInput.addActionListener( new applyButtonHandler());
-        applyInput.setToolTipText("Update StarMap view");
+//        JButton applyInput = new JButton( "Apply");
+//        applyInput.addActionListener( new applyButtonHandler());
+//        applyInput.setToolTipText("Update StarMap view");
         // create button to toggle constellations
         JButton toggle_constellations = new JButton("Toggle constellations");
         toggle_constellations.addActionListener(new toggle_button_handler());
@@ -118,7 +118,7 @@ public class toolbar extends JPanel
         
         bottom_row.add(j_spinner);
         bottom_row.add(toggle_constellations);
-        bottom_row.add(applyInput);
+        //bottom_row.add(applyInput);
        
         toolbar.add(top_row);
         toolbar.add(second_row);
@@ -225,6 +225,7 @@ public class toolbar extends JPanel
                   ui.drawArea.scale_factor);
             ui.drawArea.repaint();
             }
+        
         });
         
         // updates the star view when vmag slider is changed
@@ -257,39 +258,7 @@ public class toolbar extends JPanel
         //setLocationRelativeTo( null );
         //setDefaultCloseOperation( EXIT_ON_CLOSE );
     }
-    
-    // event handler for apply button
-    private class applyButtonHandler implements ActionListener
-    {
-        @Override
-        public void actionPerformed( ActionEvent event )
-        {
-            
-            vmag.input.setText(String.valueOf(((double)vmag.slider.getValue()/100)));
-            vmag.input_value = ((double)vmag.slider.getValue()/100);
-            compute.minimum_vmag = vmag.input_value;
-
-            compute.user_changes_position(lat.input_value, lon.input_value,
-                  azi.input_value, alt.input_value, 
-                  Integer.parseInt(new SimpleDateFormat("yyyy").format(date_spinner.getValue())),
-                  Integer.parseInt(new SimpleDateFormat("MM").format(date_spinner.getValue())), 
-                  Integer.parseInt(new SimpleDateFormat("dd").format(date_spinner.getValue())),
-                  Integer.parseInt(new SimpleDateFormat("HH").format(date_spinner.getValue())), 
-                  Integer.parseInt(new SimpleDateFormat("mm").format(date_spinner.getValue())), 
-                  Integer.parseInt(new SimpleDateFormat("ss").format(date_spinner.getValue())), 
-                  ui.drawArea.scale_factor);
-
-            // keep track of last value entered to handle when user
-            // enters out of bounds input
-            lat.last_input_value = lat.input_value;
-            lon.last_input_value = lon.input_value;
-            azi.last_input_value = azi.input_value;
-            alt.last_input_value = alt.input_value;
-            
-            ui.drawArea.repaint();
-        }
-    }
-    
+      
     //Event handler for apply button
     private class toggle_button_handler implements ActionListener
     {

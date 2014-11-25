@@ -21,8 +21,7 @@ import java.awt.event.*;
  */
 public class ui extends JFrame
 {
-    private Container contents;
-    public int x;
+    private final Container contents;
     star_panel drawArea;
     
     final toolbar toolbar;
@@ -30,7 +29,6 @@ public class ui extends JFrame
     public ui(final computation compute)      
     {
         super("StarMap"); //Call JFrame constructor
-        x = 10;
        
         contents = getContentPane();
        
@@ -45,8 +43,6 @@ public class ui extends JFrame
        
         setLocationRelativeTo( null );
         setDefaultCloseOperation( EXIT_ON_CLOSE );
-  
-        //drawArea.repaint();
        
         setVisible(true);
         setSize(toolbar.getWidth() , toolbar.getWidth() + toolbar.getHeight());

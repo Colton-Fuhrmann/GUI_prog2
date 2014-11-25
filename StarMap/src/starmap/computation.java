@@ -57,6 +57,7 @@ public class computation {
     constellation[] constellation_objects;
     List<star_contents> onscreen_stars;
     
+    // constructor does preprocessing on stars.xml and constellations.xml files.
     public computation(String[] args)
     {
         //Set defualt filenames
@@ -248,12 +249,8 @@ public class computation {
     {
         // # days since June 10, 2005 6:45:14 GMT = 1957.093588
         double t = elapsed_days();
-        // System.out.printf( "t = %.3f days elapsed\n", t );
         double tG = Math.IEEEremainder( 360.0 * 1.0027379093 * t, 360.0 );
-        double thetaG = Math.toRadians( tG );
-        // System.out.printf( "thetaG = %.3f = %.3f\n", tG, thetaG );
         double psi = tG + Math.toDegrees( lon ) + 90;
-        // System.out.printf( "psi = %.3f = %.3f\n", psi, Math.toRadians( psi ) );
 
         // rename ala formulas in Don's paper
         double alpha = current.ra;
@@ -303,6 +300,7 @@ public class computation {
         }
         else
         {   
+            // else set x & y as values off screen so constellations wont show
             x_y.x = -9999;
             x_y.y = -9999;
         }
